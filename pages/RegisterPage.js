@@ -1,4 +1,3 @@
-import { expect } from "@playwright/test";
 import { BASE_URL } from "../config/constants";
 
 export class RegisterPage {
@@ -33,9 +32,7 @@ export class RegisterPage {
     await this.page.getByRole("button", { name: "Register" }).click();
   }
 
-  async expectRegistrationSuccess() {
-    await expect(
-      this.page.getByText("Your account was created successfully"),
-    ).toBeVisible();
+  successMessage() {
+    return this.page.getByText("Your account was created successfully");
   }
 }

@@ -1,5 +1,3 @@
-import { expect } from "@playwright/test";
-
 export class TransferFundsPage {
   constructor(page) {
     this.page = page;
@@ -16,7 +14,7 @@ export class TransferFundsPage {
     await this.page.getByRole("button", { name: "Transfer" }).click();
   }
 
-  async expectTransferComplete() {
-    await expect(this.page.getByText("Transfer Complete!")).toBeVisible();
+  confirmationMessage() {
+    return this.page.getByText("Transfer Complete!");
   }
 }

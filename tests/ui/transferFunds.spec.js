@@ -1,4 +1,4 @@
-import { test } from "@playwright/test";
+import { test, expect } from "@playwright/test";
 import { RegisterPage } from "../../pages/RegisterPage";
 import { AccountsOverviewPage } from "../../pages/AccountsOverviewPage";
 import { OpenNewAccountPage } from "../../pages/OpenNewAccountPage";
@@ -15,7 +15,7 @@ test.describe("Transfer Funds", () => {
     const registerPage = new RegisterPage(page);
     await registerPage.goto();
     await registerPage.register(customer);
-    await registerPage.expectRegistrationSuccess();
+    await expect(registerPage.successMessage()).toBeVisible();
 
     const accountsOverviewPage = new AccountsOverviewPage(page);
     await accountsOverviewPage.open();
@@ -24,7 +24,7 @@ test.describe("Transfer Funds", () => {
     const openNewAccountPage = new OpenNewAccountPage(page);
     await openNewAccountPage.open();
     await openNewAccountPage.openAccount(ACCOUNT_TYPE.SAVINGS);
-    await openNewAccountPage.expectAccountOpened();
+    await expect(openNewAccountPage.successMessage()).toBeVisible();
     toAccountId = await openNewAccountPage.getNewAccountId();
   });
 
@@ -36,6 +36,6 @@ test.describe("Transfer Funds", () => {
       fromAccountId,
       toAccountId,
     });
-    await transferFundsPage.expectTransferComplete();
+    await expect(transferFundsPage.confirmationMessage()).toBeVisible();
   });
 });

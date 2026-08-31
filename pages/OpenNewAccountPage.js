@@ -1,5 +1,3 @@
-import { expect } from "@playwright/test";
-
 export class OpenNewAccountPage {
   constructor(page) {
     this.page = page;
@@ -10,8 +8,6 @@ export class OpenNewAccountPage {
   }
 
   async waitForFundingAccountsLoaded() {
-    // ParaBank's own AJAX call populates #fromAccountId asynchronously —
-    // clicking too fast submits before accounts.selectedOption is set
     await this.page.waitForFunction(() => {
       const select = document.querySelector("#fromAccountId");
       return select && select.options.length > 0;
@@ -24,8 +20,8 @@ export class OpenNewAccountPage {
     await this.page.getByRole("button", { name: "Open New Account" }).click();
   }
 
-  async expectAccountOpened() {
-    await expect(this.page.getByText("Account Opened!")).toBeVisible();
+  successMessage() {
+    return this.page.getByText("Account Opened!");
   }
 
   async getNewAccountId() {

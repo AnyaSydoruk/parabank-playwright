@@ -29,17 +29,6 @@ export default [
     plugins: { playwright },
     rules: {
       ...playwright.configs.recommended.rules,
-      "playwright/expect-expect": [
-        "warn",
-        {
-          assertFunctionNames: [
-            "expect",
-            "expectRegistrationSuccess",
-            "expectAccountOpened",
-            "expectTransferComplete",
-          ],
-        },
-      ],
     },
     languageOptions: {
       ecmaVersion: "latest",

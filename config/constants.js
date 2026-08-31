@@ -7,7 +7,6 @@ export const DEMO_USER = {
 };
 
 export const ACCOUNT_TYPE = {
-  CHECKING: "0",
   SAVINGS: "1",
 };
 
