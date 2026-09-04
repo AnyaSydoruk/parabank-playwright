@@ -5,6 +5,10 @@
   "type": "module",
   "scripts": {
     "test": "playwright test",
+    "test:ui": "playwright test --project=chromium",
+    "test:ui:all": "playwright test --project=chromium --project=firefox --project=webkit",
+    "test:api": "playwright test --project=api",
+    "report": "playwright show-report",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",

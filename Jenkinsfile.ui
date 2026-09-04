@@ -1,0 +1,58 @@
+pipeline {
+    agent any
+
+    tools {
+        nodejs 'node22'
+    }
+
+    environment {
+        CI = 'true'
+    }
+
+    triggers {
+        // Every 2 hours. H lets Jenkins pick the exact minute/offset
+        // so builds do not all start at the same second.
+        cron('H H/2 * * *')
+    }
+
+    options {
+        timeout(time: 30, unit: 'MINUTES')
+        buildDiscarder(logRotator(numToKeepStr: '20'))
+        timestamps()
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+                sh 'git log -1 --oneline'
+            }
+        }
+
+        stage('Install dependencies') {
+            steps {
+                sh 'node --version && npm --version'
+                sh 'npm ci'
+            }
+        }
+
+        stage('Install browsers') {
+            steps {
+                sh 'npx playwright install chromium'
+            }
+        }
+
+        stage('Run UI tests') {
+            steps {
+                sh 'npm run test:ui'
+            }
+        }
+    }
+
+    post {
+        always {
+            junit testResults: 'results/junit.xml', allowEmptyResults: true
+            archiveArtifacts artifacts: 'playwright-report/**', allowEmptyArchive: true
+        }
+    }
+}
